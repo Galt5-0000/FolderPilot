@@ -1,0 +1,7 @@
+name: folderpilot
+dependencies:
+  - python=3.13
+  - pip
+  - pip:
+      - pytest==9.1.0
+      - PyInstaller==6.20.0

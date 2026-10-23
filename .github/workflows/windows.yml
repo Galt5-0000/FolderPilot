@@ -1,0 +1,71 @@
+name: Windows test, build and release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: Install build dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Test, build, and start actual EXE
+        shell: pwsh
+        run: python scripts/build.py
+      - name: Verify tagged version
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          $version = python -c "from folderpilot import __version__; print('v'+__version__)"
+          if ($env:GITHUB_REF_NAME -ne $version) { throw "Tag does not match package version" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FolderPilot-Windows-x64
+          path: |
+            dist/*
+            test-results.xml
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: diagnostics
+          path: |
+            test-results.xml
+            dist/smoke-result.json
+            build/FolderPilot/warn-FolderPilot.txt
+          if-no-files-found: ignore
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'push'
+    needs: build
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v5
+        with:
+          name: FolderPilot-Windows-x64
+          path: release-files
+      - name: Publish a new release (never replace an existing release)
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$env:GITHUB_REF_NAME" --repo "$env:GITHUB_REPOSITORY" 2>$null
+          if ($LASTEXITCODE -eq 0) { throw "Release already exists; refusing overwrite" }
+          gh release create "$env:GITHUB_REF_NAME" --verify-tag --repo "$env:GITHUB_REPOSITORY" --title "FolderPilot $env:GITHUB_REF_NAME" --notes-file docs/RELEASE_NOTES.md release-files/dist/FolderPilot.exe release-files/dist/SHA256SUMS.txt release-files/dist/build-info.json release-files/dist/smoke-result.json release-files/dist/USER_GUIDE.md release-files/test-results.xml
+          if ($LASTEXITCODE -ne 0) { throw "Release creation failed" }
