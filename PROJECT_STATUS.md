@@ -25,7 +25,26 @@
 用户已选择公开仓库、MIT 许可证、GitHub 账号 `Galt5-0000`。
 本机 Git 凭据已核验该账号授权有效，具有 repo 与 workflow 权限。
 公开仓库已创建：https://github.com/Galt5-0000/FolderPilot 。
-分支推送、远程 Windows 构建、正式 Release 和附件核验待完成。
+源代码与 `v0.1.0` 标签已推送，发布代码提交：`44a460f7cc6a896c042762895fbec87621ccc339`。
+
+- Windows CI：[实际成功的工作流](https://github.com/Galt5-0000/FolderPilot/actions/runs/39924952474)。
+- Runner：Windows Server 2025 x64、Python 3.13.16，58 项测试通过，0 失败、0 错误、0 跳过。
+- CI 内实际构建并启动 EXE 自检通过。下载该 CI 产物后在本机 Windows 11、150% 缩放下实际启动自检再次通过。
+- [正式 Release v0.1.0](https://github.com/Galt5-0000/FolderPilot/releases/tag/v0.1.0)，非草稿、非预发布。
+- [Windows EXE](https://github.com/Galt5-0000/FolderPilot/releases/download/v0.1.0/FolderPilot.exe)，12,879,322 字节，公开下载 HTTP 200。
+- Release EXE SHA-256：`9dc1737a4b4aff5923f82f0126ba63003daf1bad8c69a30618dad1202b2ed639`。
+- 附件已核验：EXE、SHA256SUMS.txt、build-info.json、smoke-result.json、USER_GUIDE.md、test-results.xml。
+- [源码 ZIP](https://github.com/Galt5-0000/FolderPilot/archive/refs/tags/v0.1.0.zip)；也可 `git clone https://github.com/Galt5-0000/FolderPilot.git`。
+
+首次分支与标签一起推送后，本次只观察到 main 分支构建，未出现独立标签构建。首版通过 GitHub API 发布了同一标签提交对应的 Windows CI 构建附件，没有替换或覆盖已有发布。工作流保留后续标签自动发布配置。
+
+本地 `dist/FolderPilot.exe` 是本机 Conda 环境构建；发布附件是 Windows Runner 构建。二者来自相同功能代码、均通过实际启动自检，各自使用配套校验和。
+
+## 尚未完成与限制
+
+本次功能实现、测试、Windows 打包、源代码推送及正式发布均已完成。
+窗口人工检查在用户按 Escape 后停止；未继续桌面自动操作。DPI 模式通过实际 EXE 自检验证，100%/200% 尺寸通过测试验证，未声称所有显示器组合均完成人工视觉验收。
+未完成 EXE 代码签名、真实断电/设备故障测试与所有 Windows 版本验证，具体支持边界见 README 和测试报告。
 
 ## 开发约束
 

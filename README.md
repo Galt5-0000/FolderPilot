@@ -2,6 +2,8 @@
 
 简体中文 Windows 桌面工具，用于通用文件夹差异检测、安全补全/镜像同步、按规则清理及隔离恢复。当前版本 **0.1.0**，MIT 许可证。
 
+[下载 Windows EXE](https://github.com/Galt5-0000/FolderPilot/releases/download/v0.1.0/FolderPilot.exe) · [正式发布](https://github.com/Galt5-0000/FolderPilot/releases/tag/v0.1.0) · [源代码 ZIP](https://github.com/Galt5-0000/FolderPilot/archive/refs/tags/v0.1.0.zip)
+
 ## 使用
 
 下载 Release 中的 `FolderPilot.exe`，双击即可，无需安装 Python。完整步骤见 [中文使用说明](docs/USER_GUIDE.md)。本地构建产物位于 `dist/`。

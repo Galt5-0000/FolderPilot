@@ -47,6 +47,16 @@ python -m pytest -q --tb=short --junitxml=test-results.xml
 当前本地最终构建已完成：58 项 pytest 通过，实际 EXE 自检通过，大小 13,759,391 字节。
 显示诊断记录：每显示器 DPI 感知、实际 144 DPI、Tk scaling 约 2.0，导航宽度 270 像素。
 
+## Windows CI 与发布附件验证
+
+- [实际成功的 Windows 工作流](https://github.com/Galt5-0000/FolderPilot/actions/runs/39924952474)，提交 `44a460f7cc6a896c042762895fbec87621ccc339`。
+- Windows Server 2025 x64、Python 3.13.16，JUnit 实际记录：58 tests，0 failures，0 errors，0 skipped，耗时 5.109 秒。
+- PyInstaller 构建成功，CI 中实际启动 EXE 自检通过，Runner 为 96 DPI，确认每显示器 DPI 感知。
+- 下载 CI 构建附件，SHA-256 校验通过；该 EXE 在本机 Windows 11 x64、144 DPI 下实际启动自检通过。
+- [正式 Release](https://github.com/Galt5-0000/FolderPilot/releases/tag/v0.1.0) 非草稿、非预发布，EXE 12,879,322 字节，公开下载 HTTP 200。
+- Release 附件服务器摘要、SHA256SUMS.txt、build-info.json 与已下载二进制一致：`9dc1737a4b4aff5923f82f0126ba63003daf1bad8c69a30618dad1202b2ed639`。
+- 已实际读取公开附件中的 JUnit XML 和自检 JSON，核验 58 项通过及 EXE 自检 passed。
+
 ## 限制与如实说明
 
 - 权限不足、磁盘不足、损坏、符号链接分支及复制失败的部分场景通过故障注入验证，不代表已对真实设备故障或所有 NTFS 权限组合进行实测。
